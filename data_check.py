@@ -14,6 +14,11 @@ def generate_dates(how_much):
 def check_dates(dates):
     valid_dates = []
     invalid_dates = []
+    
+    if not dates:
+        print("Ошибка, укажите число большее 0!")
+        return [[], []]
+    
     for current in dates:
         under_inspection = current.split('.')
         if int(under_inspection[0]) <= 31 and int(under_inspection[1]) <= 12 and int(under_inspection[2]) <= 2026:
