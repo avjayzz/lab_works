@@ -1,8 +1,11 @@
 # --------------------------- LIBRARIES
 from random import randint
 from datetime import datetime
+
 # --------------------------- VARIABLES
 dates_list = []
+
+
 # --------------------------- FUNCTIONS
 def generate_dates(how_much):
     for _ in range(how_much):
@@ -23,7 +26,7 @@ def check_dates(dates):
 
     for current in dates:
         try:
-            parsed_time = datetime.strptime(current, "%d.%m.%Y")
+            parsed_time = datetime.strptime(current, "%d.%m.%Y") #почитать про стрип лол)
             if parsed_time.year <= 2026:
                 valid_dates.append(current)
             else:
@@ -35,7 +38,7 @@ def check_dates(dates):
 
 
 # ---------------------------
-how_much_dates = int(input("Сколько дат сгенерировать и проверить? "))
+how_much_dates = int(input("Сколько дат сгенерировать и проверить? ")) # закинуть в блок трай
 
 generate_dates(how_much_dates)
 answer = check_dates(dates_list)
