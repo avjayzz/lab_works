@@ -18,7 +18,6 @@ def generate_dates(how_much):
 
 def check_dates(dates):
     valid_dates = []
-    invalid_dates = []
 
     if not dates:
         print("Ошибка, укажите число большее 0!")
@@ -26,20 +25,24 @@ def check_dates(dates):
 
     for current in dates:
         try:
-            parsed_time = datetime.strptime(current, "%d.%m.%Y") #почитать про стрип лол)
-            if parsed_time.year <= 2026:
+            parsed_time = datetime.strptime(current, "%d.%m.%Y")
+            if parsed_time:
                 valid_dates.append(current)
-            else:
-                invalid_dates.append(current)
         except ValueError:
-            invalid_dates.append(current)
+            continue
 
-    return valid_dates, invalid_dates
+    return valid_dates
 
 
 # ---------------------------
-how_much_dates = int(input("Сколько дат сгенерировать и проверить? ")) # закинуть в блок трай
+try:
+    how_much_dates = int(input("Сколько дат сгенерировать и проверить? "))
 
-generate_dates(how_much_dates)
-answer = check_dates(dates_list)
-print(f'Количество дат прошедших проверку: {len(answer[0])}, количество дат не прошедших проверку: {len(answer[1])}')
+except ValueError:
+    print("Введенное значение не является числом")
+
+else:
+    generate_dates(how_much_dates)
+    answer = check_dates(dates_list)
+    print(f'Количество дат прошедших проверку: {len(answer[0])}, даты прошедшие проверку: {answer}')
+    print(f'Самая ранняя дата - {sorted(answer)[0]}, самая позднаяя дата - {sorted(answer)[-1]}, ')
