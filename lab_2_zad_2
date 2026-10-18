@@ -1,0 +1,77 @@
+def parse_friendship_line(line: str):
+    if " --- " not in line:
+        raise ValueError("Отсутствует разделитель ' --- ' (с пробелами по бокам).")
+
+    parts = line.split(" --- ")
+    if len(parts) != 2:
+        raise ValueError("Строка должна содержать ровно два имени, разделённых ' --- '.")
+
+    person1, person2 = parts[0].strip(), parts[1].strip()
+    if not person1 or not person2:
+        raise ValueError("Имена людей не могут быть пустыми.")
+    if person1 == person2:
+        raise ValueError("Человек не может быть другом самому себе.")
+
+    return person1, person2
+
+
+def input_friendships():
+    friends_dict: dict[str, set[str]] = {}
+    print("Введите связи в формате 'person_1 --- person_2' (для завершения введите '!!!'):")
+
+    while True:
+        try:
+            line = input("> ").strip()
+            if line == "!!!":
+                break
+            if not line:
+                raise ValueError("Введена пустая строка.")
+
+            p1, p2 = parse_friendship_line(line)
+
+            friends_dict.setdefault(p1, set()).add(p2)
+            friends_dict.setdefault(p2, set()).add(p1)
+
+        except ValueError as e:
+            print(f"[Ошибка формата]: {e} Попробуйте снова.")
+
+    return friends_dict
+
+
+def find_pairs_with_common_friends(friends_dict: dict[str, set[str]], min_common: int = 2):
+    people = sorted(friends_dict.keys())
+    n = len(people)
+    result = []
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            p1, p2 = people[i], people[j]
+            common_friends = friends_dict[p1] & friends_dict[p2]
+            if len(common_friends) >= min_common:
+                result.append((p1, p2, common_friends))
+
+    return result
+
+
+def main_task_2():
+    friends_dict = input_friendships()
+
+    if not friends_dict:
+        print("Данные о друзьях не были введены.")
+        return
+
+    print("\nСформированный словарь друзей:")
+    for person, friends in friends_dict.items():
+        print(f"  {person}: {', '.join(sorted(friends))}")
+
+    pairs = find_pairs_with_common_friends(friends_dict, min_common=2)
+
+    print("\nПары людей с двумя и более общими друзьями:")
+    if pairs:
+        for p1, p2, common in pairs:
+            common_str = ", ".join(sorted(common))
+            print(f"  {p1} - {p2} (общие друзья: {common_str})")
+    else:
+        print("  Таких пар не найдено.")
+        
+main_task_2()
