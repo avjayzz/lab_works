@@ -1,0 +1,56 @@
+import random
+
+
+def get_matrix_size():
+    while True:
+        try:
+            raw_input = input("Введите размер матрицы M (целое положительное число): ").strip()
+            m = int(raw_input)
+            if m <= 0:
+                raise ValueError("Размер матрицы должен быть строго больше нуля.")
+            return m
+        except ValueError as e:
+            print(f"Ошибка ввода: {e}. Пожалуйста, введите корректное целое число > 0.")
+
+
+def generate_matrix(m):
+    min_val = -100; max_val = 100
+    return [[random.randint(min_val, max_val) for _ in range(m)] for _ in range(m)]
+
+
+def print_matrix(matrix: list[list[int]]):
+    print("\nСгенерированная матрица:")
+    for row in matrix:
+        print(" ".join(f"{val:5d}" for val in row))
+    print()
+
+
+def find_saddle_points(matrix: list[list[int]]):
+    m = len(matrix)
+    row_mins = [min(row) for row in matrix]
+    col_maxs = [max(matrix[i][j] for i in range(m)) for j in range(m)]
+
+    saddle_points = []
+    for i in range(m):
+        for j in range(m):
+            val = matrix[i][j]
+            if val == row_mins[i] and val == col_maxs[j]:
+                saddle_points.append((i, j, val))
+
+    return saddle_points
+
+
+def main_task_1():
+    m = get_matrix_size()
+    matrix = generate_matrix(m)
+    print_matrix(matrix)
+
+    saddle_points = find_saddle_points(matrix)
+    if saddle_points:
+        print("Найденные седловые точки:")
+        for row_idx, col_idx, val in saddle_points:
+            print(f"Индексы: ({row_idx}, {col_idx}), Значение: {val}")
+    else:
+        print("Седловых точек в матрице нет.")
+
+main_task_1()
