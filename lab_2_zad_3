@@ -19,13 +19,10 @@ def input_students_skills():
                 skill = input("  Навык: ").strip()
                 if not skill:
                     break
-                if skill == "!!!":
-                    raise ValueError(
-                        "Строка '!!!' зарезервирована для выхода в меню имени. Нажми Enter, чтобы закончить навыки.")
                 students[name].add(skill.lower())
 
-        except ValueError as e:
-            print(f"[Ошибка ввода]: {e}")
+        except ValueError:
+            print(f"[Ошибка ввода]")
 
     return students
 
@@ -74,7 +71,7 @@ def print_jaccard_matrix(students):
 
     col_width = max(max(len(name) for name in names), 6) + 2
 
-    print("\nd. Матрица сходства навыков (коэффициент Жаккарда):")
+    print("\n Матрица сходства навыков (коэффициент Жаккарда):")
     header = " " * col_width + "".join(f"{name:>{col_width}}" for name in names)
     print(header)
     print("-" * len(header))
@@ -87,7 +84,7 @@ def print_jaccard_matrix(students):
         print(row_str)
 
 
-def main_task_3():
+def main_task():
     students = input_students_skills()
 
     try:
@@ -97,7 +94,7 @@ def main_task_3():
         print(f"\n[Ошибка выполнения]: {e}")
         return
 
-    print("\na. Студенты с полностью совпадающими наборами навыков:")
+    print("\n Студенты с полностью совпадающими наборами навыков:")
     identical = find_identical_skills(students)
     if identical:
         for n1, n2 in identical:
@@ -105,7 +102,7 @@ def main_task_3():
     else:
         print("Таких совпадений нет.")
 
-    print("\nb. Студенты, чьи навыки являются строгим надмножеством для других:")
+    print("\n Студенты, чьи навыки являются строгим надмножеством для других:")
     supersets = find_strict_supersets(students)
     if supersets:
         for super_student, sub_students in supersets.items():
@@ -113,10 +110,10 @@ def main_task_3():
     else:
         print("  Таких студентов нет.")
 
-    print("\nc. Студенты с самым большим количеством навыков:")
+    print("\n Студенты с самым большим количеством навыков:")
     top_students, max_count = find_most_skilled_students(students)
     print(f"  {', '.join(top_students)} (количество навыков: {max_count})")
 
     print_jaccard_matrix(students)
 
-main_task_3()
+main_task()
