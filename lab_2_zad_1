@@ -9,8 +9,8 @@ def get_matrix_size():
             if m <= 0:
                 raise ValueError("Размер матрицы должен быть строго больше нуля.")
             return m
-        except ValueError as e:
-            print(f"Ошибка ввода: {e}. Пожалуйста, введите корректное целое число > 0.")
+        except ValueError:
+            print(f"Ошибка ввода. Пожалуйста, введите корректное целое число > 0.")
 
 
 def generate_matrix(m):
@@ -18,14 +18,14 @@ def generate_matrix(m):
     return [[random.randint(min_val, max_val) for _ in range(m)] for _ in range(m)]
 
 
-def print_matrix(matrix: list[list[int]]):
+def print_matrix(matrix):
     print("\nСгенерированная матрица:")
     for row in matrix:
         print(" ".join(f"{val:5d}" for val in row))
     print()
 
 
-def find_saddle_points(matrix: list[list[int]]):
+def find_saddle_points(matrix):
     m = len(matrix)
     row_mins = [min(row) for row in matrix]
     col_maxs = [max(matrix[i][j] for i in range(m)) for j in range(m)]
@@ -40,7 +40,7 @@ def find_saddle_points(matrix: list[list[int]]):
     return saddle_points
 
 
-def main_task_1():
+def main_task():
     m = get_matrix_size()
     matrix = generate_matrix(m)
     print_matrix(matrix)
@@ -53,4 +53,4 @@ def main_task_1():
     else:
         print("Седловых точек в матрице нет.")
 
-main_task_1()
+main_task()
