@@ -16,12 +16,12 @@ def parse_friendship_line(line: str):
 
 
 def input_friendships():
-    friends_dict: dict[str, set[str]] = {}
+    friends_dict = {}
     print("Введите связи в формате 'person_1 --- person_2' (для завершения введите '!!!'):")
 
     while True:
         try:
-            line = input("> ").strip()
+            line = input("").strip()
             if line == "!!!":
                 break
             if not line:
@@ -32,13 +32,14 @@ def input_friendships():
             friends_dict.setdefault(p1, set()).add(p2)
             friends_dict.setdefault(p2, set()).add(p1)
 
-        except ValueError as e:
-            print(f"[Ошибка формата]: {e} Попробуйте снова.")
+        except ValueError:
+            print(f"[Ошибка формата]. Попробуйте снова.")
 
     return friends_dict
 
 
-def find_pairs_with_common_friends(friends_dict: dict[str, set[str]], min_common: int = 2):
+def find_pairs_with_common_friends(friends_dict):
+    min_common = 2
     people = sorted(friends_dict.keys())
     n = len(people)
     result = []
@@ -53,7 +54,7 @@ def find_pairs_with_common_friends(friends_dict: dict[str, set[str]], min_common
     return result
 
 
-def main_task_2():
+def main_task():
     friends_dict = input_friendships()
 
     if not friends_dict:
@@ -64,7 +65,7 @@ def main_task_2():
     for person, friends in friends_dict.items():
         print(f"  {person}: {', '.join(sorted(friends))}")
 
-    pairs = find_pairs_with_common_friends(friends_dict, min_common=2)
+    pairs = find_pairs_with_common_friends(friends_dict)
 
     print("\nПары людей с двумя и более общими друзьями:")
     if pairs:
@@ -72,6 +73,7 @@ def main_task_2():
             common_str = ", ".join(sorted(common))
             print(f"  {p1} - {p2} (общие друзья: {common_str})")
     else:
-        print("  Таких пар не найдено.")
-        
-main_task_2()
+        print("Таких пар не найдено.")
+
+
+main_task()
